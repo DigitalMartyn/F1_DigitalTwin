@@ -47,7 +47,7 @@ if __name__ == "__main__":
     round_index = sys.argv.index("--round") + 1
     round_number = int(sys.argv[round_index])
   else:
-    round_number = 13  # Default round number
+    round_number = 12  # Default round number
 
   playback_speed = 1
 

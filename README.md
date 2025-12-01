@@ -1,77 +1,167 @@
-# F1 Race Replay 🏎️ 🏁
+# F1 Digital Twin 🏎️ 🏁
 
-A Python application for visualizing Formula 1 race telemetry and replaying race events with interactive controls and a graphical interface.
+A web-based Formula 1 race replay application with interactive 3D visualization. Watch historical F1 races unfold with real-time telemetry data, orbital camera controls, and a live leaderboard.
 
 ![Race Replay Preview](./resources/preview.png)
 
 ## Features
 
-- **Race Replay Visualization:** Watch the race unfold with real-time driver positions on a rendered track.
-- **Leaderboard:** See live driver positions and current tyre compounds.
-- **Lap & Time Display:** Track the current lap and total race time.
-- **Driver Status:** Drivers who retire or go out are marked as "OUT" on the leaderboard.
-- **Interactive Controls:** Pause, rewind, fast forward, and adjust playback speed using on-screen buttons or keyboard shortcuts.
-- **Legend:** On-screen legend explains all controls.
-- **Driver Telemetry Insights:** View speed, gear, DRS status, and current lap for selected drivers when selected on the leaderboard.
+- **3D Track Visualization:** Interactive Three.js 3D rendering of F1 circuits with orbital camera controls
+- **Live Telemetry:** Real-time driver positions, speeds, gear, and DRS status
+- **Interactive Leaderboard:** Click drivers to highlight and follow them on track
+- **Race Selector:** Choose any race from 2018+ seasons (Race or Sprint sessions)
+- **Playback Controls:** Pause, rewind, fast forward, and adjust playback speed (0.5x to 4x)
+- **Tyre Compound Visualization:** Color-coded tyre indicators for each driver
+- **Driver Status Tracking:** Visual indicators for drivers who retire or encounter issues
+- **Cached Data Support:** Automatically caches race data for faster subsequent loads
+
+## Tech Stack
+
+**Backend:**
+- Python 3.8+ with FastAPI
+- FastF1 for F1 telemetry data
+- Pandas & NumPy for data processing
+
+**Frontend:**
+- React 18 with TypeScript
+- Three.js with React Three Fiber
+- Vite for fast development and builds
+
+## Quick Start
+
+### Prerequisites
+- Python 3.8 or higher
+- Node.js 16+ and npm
+
+### Installation
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/DigitalMartyn/F1_DigitalTwin.git
+cd F1_DigitalTwin
+```
+
+2. **Set up Python virtual environment:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+3. **Install Python dependencies:**
+```bash
+pip install -r backend/requirements.txt
+```
+
+4. **Install frontend dependencies:**
+```bash
+cd frontend
+npm install --legacy-peer-deps
+cd ..
+```
+
+### Running the Application
+
+**Option 1: Use the start script (recommended)**
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+**Option 2: Start services manually**
+
+Terminal 1 - Backend:
+```bash
+.venv/bin/python backend/main.py
+```
+
+Terminal 2 - Frontend:
+```bash
+cd frontend
+npm run dev
+```
+
+Then open your browser to **http://localhost:5173**
 
 ## Controls
 
-- **Pause/Resume:** SPACE or Pause button
-- **Rewind/Fast Forward:** ← / → or Rewind/Fast Forward buttons
-- **Playback Speed:** ↑ / ↓ or Speed button (cycles through 0.5x, 1x, 2x, 4x)
-- **Set Speed Directly:** Keys 1–4
+**Playback:**
+- **SPACE** - Play/Pause
+- **← →** - Rewind/Fast Forward (30 frames)
+- **1-4** - Set playback speed directly (0.5x, 1x, 2x, 4x)
 
-## Requirements
+**3D View:**
+- **Left Click + Drag** - Rotate camera
+- **Right Click + Drag** - Pan view
+- **Scroll Wheel** - Zoom in/out
 
-- Python 3.8+
-- [FastF1](https://github.com/theOehrly/Fast-F1)
-- [Arcade](https://api.arcade.academy/en/latest/)
-- numpy
+**Leaderboard:**
+- Click any driver to highlight and track them on the 3D visualization
 
-Install dependencies:
-```bash
-pip install -r requirements.txt
+## Project Structure
+
+```
+F1_DigitalTwin/
+├── backend/
+│   ├── main.py              # FastAPI server & race data endpoints
+│   └── requirements.txt     # Python dependencies
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   │   ├── Track3D.tsx         # 3D track visualization
+│   │   │   ├── RaceViewer.tsx      # Main race viewer
+│   │   │   ├── Leaderboard.tsx     # Driver standings
+│   │   │   ├── Controls.tsx        # Playback controls
+│   │   │   └── RaceSelector.tsx    # Race selection UI
+│   │   ├── types.ts         # TypeScript interfaces
+│   │   └── App.tsx          # Main app component
+│   ├── package.json
+│   └── vite.config.ts
+├── src/
+│   ├── f1_data.py           # Telemetry processing
+│   └── lib/tyres.py         # Type definitions
+├── computed_data/           # Cached race telemetry (auto-generated)
+├── start.sh                 # Quick start script
+└── README.md
 ```
 
-FastF1 cache folder will be created automatically on first run. If it is not created, you can manually create a folder named `.fastf1-cache` in the project root.
+## API Endpoints
 
-## Usage
+- `GET /api/race/{year}/{round}?session_type=R` - Get race data for a specific event
+  - Parameters:
+    - `year` - Season year (2018+)
+    - `round` - Race round number (1-24)
+    - `session_type` - R (Race) or S (Sprint)
+    - `refresh` - Force refresh cached data (optional)
 
-Run the main script and specify the year and round:
+## Data Caching
+
+Race telemetry is cached in `computed_data/` after first load. This significantly speeds up subsequent loads of the same race. Use the refresh parameter in the API or delete cached files to force a refresh.
+
+## Known Issues
+
+- Leaderboard positioning may be inaccurate during the first few corners as telemetry data stabilizes
+- Pit stop entries can temporarily affect position calculations
+- End-of-race positions may show anomalies due to telemetry coordinates after race finish
+- These are inherent limitations of the telemetry data and are being actively improved
+
+## Development
+
+**Building for Production:**
 ```bash
-python main.py --year 2025 --round 12
+cd frontend
+npm run build
 ```
 
-To run a Sprint session (if the event has one), add `--sprint`:
-```bash
-python main.py --year 2025 --round 12 --sprint
-```
-
-The application will load a pre-computed telemetry dataset if you have run it before for the same event. To force re-computation of telemetry data, use the `--refresh-data` flag:
-```bash
-python main.py --year 2025 --round 12 --refresh-data
-```
-
-## File Structure
-
-- `main.py` — Entry point, handles session loading and starts the replay.
-- `src/lib/tyres.py` — Type definitions for telemetry data structures.
-- `src/f1_data.py` — Telemetry loading, processing, and frame generation.
-- `src/arcade_replay.py` — Visualization and UI logic.
-
-## Customization
-
-- Change track width, colors, and UI layout in `src/arcade_replay.py`.
-- Adjust telemetry processing in `src/f1_data.py`.
+**Running Tests:**
+Backend and frontend tests coming soon.
 
 ## Contributing
 
-- Open pull requests for UI improvements or new features.
-- Report issues on GitHub.
-
-# Known Issues
-
-- The leaderboard appears to be inaccurate for the first few corners of the race. The leaderboard is also temporarily affected by a driver going in the pits. At the end of the race the leadeboard is sometimes affected by the drivers final x,y positions being further ahead than other drivers. These issues are known issues caused by innacuracies in the telemetry and being worked on for future releases. Its likely that these issues will be fixed in stages as improving the leaderboard accuracy is a complex task.
+Contributions are welcome! Please feel free to submit pull requests for:
+- UI/UX improvements
+- New features and visualizations
+- Bug fixes and performance optimizations
+- Documentation improvements
 
 ## 📝 License
 
@@ -79,8 +169,15 @@ This project is licensed under the MIT License.
 
 ## ⚠️ Disclaimer
 
-No copyright infringement intended. Formula 1 and related trademarks are the property of their respective owners. All data used is sourced from publicly available APIs and is used for educational and non-commercial purposes only.
+No copyright infringement intended. Formula 1 and related trademarks are the property of their respective owners. All data is sourced from publicly available APIs via the FastF1 library and is used for educational and non-commercial purposes only.
+
+## Acknowledgments
+
+- Original concept and Python implementation by [Tom Shaw](https://tomshaw.dev)
+- Web conversion and 3D visualization by Martyn Gooding
+- Built with [FastF1](https://github.com/theOehrly/Fast-F1) for telemetry data
+- Powered by [FastAPI](https://fastapi.tiangolo.com/), [React](https://react.dev/), and [Three.js](https://threejs.org/)
 
 ---
 
-Built with ❤️ by [Tom Shaw](https://tomshaw.dev)
+🏎️ Built with ❤️ for F1 fans

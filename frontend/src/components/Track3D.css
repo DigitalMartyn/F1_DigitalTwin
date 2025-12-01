@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   position: relative;
-  background: #0a0a0a;
+  background: #000000;
 }
 
 .track-3d-controls {
@@ -11,15 +11,16 @@
   left: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
   pointer-events: none;
 }
 
 .control-hint {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  color: #aaa;
-  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 0.4rem 0.75rem;
+  border-radius: 3px;
+  color: #999;
+  font-size: 0.8rem;
   backdrop-filter: blur(4px);
+  border-left: 2px solid #00ffcc;
 }

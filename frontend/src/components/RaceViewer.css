@@ -2,16 +2,16 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #1a1a1a;
+  background: #000000;
 }
 
 .race-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
-  background: #2a2a2a;
-  border-bottom: 2px solid #e10600;
+  padding: 0.75rem 1.5rem;
+  background: #000000;
+  border-bottom: none;
 }
 
 .race-header h1 {
@@ -46,12 +46,12 @@
 .track-container {
   flex: 1;
   position: relative;
-  background: #0a0a0a;
+  background: #000000;
 }
 
 .sidebar {
-  width: 350px;
-  background: #2a2a2a;
-  border-left: 2px solid #333;
+  width: 320px;
+  background: #000000;
+  border-left: none;
   overflow-y: auto;
 }

@@ -1,7 +1,7 @@
 .controls {
-  background: #2a2a2a;
-  border-top: 2px solid #333;
-  padding: 1rem;
+  background: #000000;
+  border-top: 1px solid #1a1a1a;
+  padding: 1rem 1.5rem;
 }
 
 .timeline {
@@ -21,7 +21,7 @@
   appearance: none;
   width: 16px;
   height: 16px;
-  background: #e10600;
+  background: #00ffcc;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -29,7 +29,7 @@
 .timeline-slider::-moz-range-thumb {
   width: 16px;
   height: 16px;
-  background: #e10600;
+  background: #00ffcc;
   border-radius: 50%;
   cursor: pointer;
   border: none;
@@ -51,26 +51,29 @@
 }
 
 .control-btn {
-  padding: 0.75rem 1.5rem;
-  background: #333;
+  padding: 0.65rem 1.25rem;
+  background: #1a1a1a;
   color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.2rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .control-btn:hover {
-  background: #444;
+  background: #2a2a2a;
+  border-color: #00ffcc;
 }
 
 .play-btn {
-  background: #e10600;
+  background: #1a1a1a;
+  border-color: #00ffcc;
 }
 
 .play-btn:hover {
-  background: #c00500;
+  background: #00ffcc;
+  color: #000000;
 }
 
 .speed-btn {

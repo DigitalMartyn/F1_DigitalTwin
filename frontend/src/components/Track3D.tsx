@@ -31,21 +31,21 @@ function DriverCar({ position, color, isSelected, label }: {
   return (
     <group position={position}>
       <mesh ref={meshRef}>
-        <boxGeometry args={isSelected ? [7, 3, 11] : [5, 2.5, 9]} />
+        <boxGeometry args={isSelected ? [8, 3.5, 12] : [6, 3, 10]} />
         <meshStandardMaterial 
           color={color} 
           emissive={color}
-          emissiveIntensity={isSelected ? 0.5 : 0.2}
-          metalness={0.7} 
-          roughness={0.3} 
+          emissiveIntensity={isSelected ? 0.7 : 0.3}
+          metalness={0.8} 
+          roughness={0.2} 
         />
       </mesh>
       {isSelected && (
         <>
-          <pointLight position={[0, 15, 0]} intensity={60} color={color} />
-          <mesh position={[0, 10, 0]}>
-            <sphereGeometry args={[1, 16, 16]} />
-            <meshBasicMaterial color={color} transparent opacity={0.6} />
+          <pointLight position={[0, 20, 0]} intensity={80} color={color} />
+          <mesh position={[0, 12, 0]}>
+            <sphereGeometry args={[1.5, 16, 16]} />
+            <meshBasicMaterial color={color} transparent opacity={0.7} />
           </mesh>
         </>
       )}
@@ -57,8 +57,8 @@ function TrackLine({ points }: { points: THREE.Vector3[] }) {
   return (
     <Line
       points={points}
-      color="#666666"
-      lineWidth={4}
+      color="#888888"
+      lineWidth={5}
     />
   );
 }
@@ -125,7 +125,7 @@ function Track3DScene({ trackData, frame, driverColors, circuitRotation, selecte
 
   return (
     <>
-      <PerspectiveCamera makeDefault position={[0, 200, 300]} />
+      <PerspectiveCamera makeDefault position={[0, 250, 350]} />
       <OrbitControls 
         target={trackCenter as [number, number, number]}
         enableDamping
@@ -136,14 +136,15 @@ function Track3DScene({ trackData, frame, driverColors, circuitRotation, selecte
       />
       
       {/* Lighting */}
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[100, 150, 50]} intensity={0.8} castShadow />
-      <pointLight position={[0, 100, 0]} intensity={0.5} color="#ffffff" />
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[100, 150, 50]} intensity={1.2} castShadow />
+      <pointLight position={[0, 100, 0]} intensity={0.8} color="#ffffff" />
+      <hemisphereLight args={['#ffffff', '#222222', 0.4]} />
       
       {/* Track surface */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[trackCenter[0], -1, trackCenter[2]]} receiveShadow>
         <planeGeometry args={[1000, 1000]} />
-        <meshStandardMaterial color="#000000" roughness={1} />
+        <meshStandardMaterial color="#000000" roughness={0.95} />
       </mesh>
       
       {/* Track line */}
@@ -151,9 +152,9 @@ function Track3DScene({ trackData, frame, driverColors, circuitRotation, selecte
       
       {/* Start/Finish line */}
       {trackPoints.length > 0 && (
-        <mesh position={[trackPoints[0].x, 0.2, trackPoints[0].z]}>
-          <boxGeometry args={[20, 0.3, 5]} />
-          <meshStandardMaterial color="#00ffcc" emissive="#00ffcc" emissiveIntensity={0.8} />
+        <mesh position={[trackPoints[0].x, 0.3, trackPoints[0].z]}>
+          <boxGeometry args={[25, 0.4, 6]} />
+          <meshStandardMaterial color="#00ffcc" emissive="#00ffcc" emissiveIntensity={1.2} />
         </mesh>
       )}
       

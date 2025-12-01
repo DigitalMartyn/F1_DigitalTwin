@@ -28,13 +28,13 @@ def load_race_session(year, round_number, session_type='R'):
 def get_driver_colors(session):
     color_mapping = fastf1.plotting.get_driver_color_mapping(session)
     
-    # Convert hex colors to RGB tuples
-    rgb_colors = {}
+    # Return hex colors as strings for web frontend
+    hex_colors = {}
     for driver, hex_color in color_mapping.items():
-        hex_color = hex_color.lstrip('#')
-        rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
-        rgb_colors[driver] = rgb
-    return rgb_colors
+        if not hex_color.startswith('#'):
+            hex_color = '#' + hex_color
+        hex_colors[driver] = hex_color
+    return hex_colors
 
 def get_circuit_rotation(session):
     circuit = session.get_circuit_info()

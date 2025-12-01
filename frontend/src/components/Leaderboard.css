@@ -1,0 +1,132 @@
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.leaderboard-header {
+  padding: 1rem;
+  background: #1a1a1a;
+  border-bottom: 2px solid #e10600;
+}
+
+.leaderboard-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.lap-info {
+  margin-top: 0.5rem;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.leaderboard-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.leaderboard-item:hover {
+  background: #333;
+}
+
+.leaderboard-item.selected {
+  background: #1a3a4a;
+}
+
+.leaderboard-item.out {
+  opacity: 0.5;
+}
+
+.position {
+  width: 30px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.driver-color {
+  width: 4px;
+  height: 40px;
+  margin-right: 0.75rem;
+  border-radius: 2px;
+}
+
+.driver-info {
+  flex: 1;
+}
+
+.driver-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.driver-team {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.tyre-compound {
+  margin-left: 0.5rem;
+}
+
+.tyre-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #666;
+}
+
+.status-badge {
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: #ff4444;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.driver-telemetry {
+  padding: 1rem;
+  background: #1a1a1a;
+  border-top: 2px solid #333;
+}
+
+.driver-telemetry h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+}
+
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.telemetry-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+.telemetry-item .label {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-bottom: 0.25rem;
+}
+
+.telemetry-item .value {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #e10600;
+}

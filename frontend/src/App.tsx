@@ -14,16 +14,42 @@ function App() {
   const loadRace = async (year: number, round: number, sessionType: string = 'R') => {
     setLoading(true);
     setError(null);
+    console.log(`Loading race: ${year} Round ${round} Session ${sessionType}`);
+    
     try {
-      const response = await fetch(`/api/race/${year}/${round}?session_type=${sessionType}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout
+      
+      const response = await fetch(`/api/race/${year}/${round}?session_type=${sessionType}`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      
+      console.log(`API Response status: ${response.status}`);
+      
       if (!response.ok) {
         throw new Error(`Failed to load race data: ${response.statusText}`);
       }
+      
       const data: RaceData = await response.json();
+      console.log('Race data loaded successfully', {
+        frames: data.frames.length,
+        drivers: Object.keys(data.drivers).length
+      });
+      
       setRaceData(data);
       setSelectedRace({ year, round });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error occurred');
+      console.error('Error loading race:', err);
+      if (err instanceof Error) {
+        if (err.name === 'AbortError') {
+          setError('Request timed out. The race data is taking too long to load. Please try again.');
+        } else {
+          setError(`Failed to load race data: ${err.message}`);
+        }
+      } else {
+        setError('Unknown error occurred while loading race data');
+      }
       setRaceData(null);
     } finally {
       setLoading(false);

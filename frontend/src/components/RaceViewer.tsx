@@ -127,20 +127,61 @@ function RaceViewer({ raceData, onBackToSelection }: RaceViewerProps) {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [isPlaying]);
 
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
     <div className="race-viewer">
-      <header className="race-header">
-        <button className="back-button" onClick={onBackToSelection}>
-          ← Back
-        </button>
-        <h1>{raceData.event.name} - {raceData.event.session_type === 'S' ? 'Sprint' : 'Race'}</h1>
-        <div className="race-info">
-          Round {raceData.event.round} • {raceData.event.year}
-        </div>
-      </header>
-
       <div className="race-content">
         <div className="track-container">
+          <div className="race-info-overlay">
+            <div className="lap-display">
+              <div className="lap-label">Lap:</div>
+              <div className="lap-value">{frame.lap}</div>
+            </div>
+            <div className="time-display">
+              <div className="time-label">Race Time:</div>
+              <div className="time-value">{formatTime(frame.time)}</div>
+            </div>
+          </div>
+
+          {selectedDriver && frame.positions[selectedDriver] && (
+            <div className="driver-info-panel">
+              <div className="driver-panel-header">
+                Driver: <span style={{ color: '#00ffcc' }}>{selectedDriver}</span>
+              </div>
+              <div className="driver-panel-stats">
+                <div className="stat-row">
+                  <span className="stat-label">Speed:</span>
+                  <span className="stat-value">{frame.positions[selectedDriver].speed?.toFixed(1) || 'N/A'} km/h</span>
+                </div>
+                <div className="stat-row">
+                  <span className="stat-label">Gear:</span>
+                  <span className="stat-value">{frame.positions[selectedDriver].gear || 'N/A'}</span>
+                </div>
+                <div className="stat-row">
+                  <span className="stat-label">DRS:</span>
+                  <span className="stat-value">{frame.positions[selectedDriver].drs ? 'On' : 'Off'}</span>
+                </div>
+                <div className="stat-row">
+                  <span className="stat-label">Current Lap:</span>
+                  <span className="stat-value">{frame.lap}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="controls-legend">
+            <div className="legend-title">Controls:</div>
+            <div className="legend-item">[SPACE] Pause/Resume</div>
+            <div className="legend-item">[←/→] Rewind / FastForward</div>
+            <div className="legend-item">[↑/↓] Speed +/- (0.5x, 1x, 2x, 4x)</div>
+          </div>
+
           <Track3D
             trackData={raceData.track}
             frame={frame}

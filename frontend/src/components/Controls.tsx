@@ -74,11 +74,6 @@ function Controls({
         </button>
       </div>
       
-      <div className="keyboard-hints">
-        <span>SPACE: Play/Pause</span>
-        <span>← →: Rewind/Forward</span>
-        <span>1-4: Speed</span>
-      </div>
     </div>
   );
 }

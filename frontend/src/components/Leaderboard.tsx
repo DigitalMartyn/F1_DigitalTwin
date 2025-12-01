@@ -30,9 +30,6 @@ function Leaderboard({ frame, drivers, driverColors, selectedDriver, onSelectDri
     <div className="leaderboard">
       <div className="leaderboard-header">
         <h2>Leaderboard</h2>
-        <div className="lap-info">
-          Lap {frame.lap}
-        </div>
       </div>
       
       <div className="leaderboard-list">
@@ -47,46 +44,21 @@ function Leaderboard({ frame, drivers, driverColors, selectedDriver, onSelectDri
               className={`leaderboard-item ${isSelected ? 'selected' : ''} ${isOut ? 'out' : ''}`}
               onClick={() => onSelectDriver(isSelected ? null : driverCode)}
             >
-              <div className="position">{pos.position}</div>
-              <div
-                className="driver-color"
-                style={{ backgroundColor: driverColors[driverCode] }}
-              />
-              <div className="driver-info">
-                <div className="driver-name">{driverCode}</div>
-                <div className="driver-team">{driverInfo?.team || 'Unknown'}</div>
+              <div className="position-number">{pos.position}.</div>
+              <div className="driver-code" style={{ color: driverColors[driverCode] }}>
+                {driverCode}
               </div>
-              <div className="tyre-compound">
+              <div className="tyre-indicator-small">
                 <div
-                  className="tyre-indicator"
+                  className="tyre-dot"
                   style={{ backgroundColor: getTyreColor(pos.compound) }}
                 />
               </div>
-              {isOut && <div className="status-badge">OUT</div>}
+              {isOut && <div className="status-out">OUT</div>}
             </div>
           );
         })}
       </div>
-      
-      {selectedDriver && frame.positions[selectedDriver] && (
-        <div className="driver-telemetry">
-          <h3>Telemetry - {selectedDriver}</h3>
-          <div className="telemetry-grid">
-            <div className="telemetry-item">
-              <span className="label">Speed</span>
-              <span className="value">{frame.positions[selectedDriver].speed?.toFixed(0) || 'N/A'} km/h</span>
-            </div>
-            <div className="telemetry-item">
-              <span className="label">Gear</span>
-              <span className="value">{frame.positions[selectedDriver].gear || 'N/A'}</span>
-            </div>
-            <div className="telemetry-item">
-              <span className="label">DRS</span>
-              <span className="value">{frame.positions[selectedDriver].drs ? 'Active' : 'Inactive'}</span>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,7 +1,9 @@
 .controls {
   background: #000000;
   border-top: 1px solid #1a1a1a;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
+  position: relative;
+  z-index: 5;
 }
 
 .timeline {
@@ -78,12 +80,4 @@
 
 .speed-btn {
   min-width: 60px;
-}
-
-.keyboard-hints {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  font-size: 0.75rem;
-  color: #666;
 }
